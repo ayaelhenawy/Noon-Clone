@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 const reviewSchema=mongoose.Schema({
-    text:{
+    comment:{
         type:String,
         trim:true,
-        minlength:[10,'too short name'],
+        minlength:[10,'too short comment'],
     },
     user:{
         type:mongoose.Types.ObjectId,

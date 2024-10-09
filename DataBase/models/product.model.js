@@ -44,7 +44,7 @@ const productSchema=mongoose.Schema({
         min:0,
         required:true,
     },
-    quantity:{
+    stock:{
         type:Number,
         min:0,
         default:0
