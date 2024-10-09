@@ -14,7 +14,7 @@ const addsubCategory=async(req,res)=>{
 
 const allsubCategory=catchError(async(req,res)=>{
     let subCcategories=await subCategoryModel.find();
-    res.json({message:"success",SubCategories})
+    res.json({message:"success",subCategories})
 })
 
 const getsubCategory=catchError(
