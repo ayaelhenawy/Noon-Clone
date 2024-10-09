@@ -31,6 +31,7 @@ const deleteCategory=async(req,res)=>{
     res.json({message:"success",category})
 }
 
+
 export{
     addCategory,allCategory,getCategory,updateCategory,deleteCategory
 }
