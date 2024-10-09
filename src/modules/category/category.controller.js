@@ -26,7 +26,7 @@ const getCategory=catchError(
 
 const updateCategory=catchError(
     async(req,res)=>{
-    
+        req.body.slug=slugify(req.body.name)
         let category=await categoryModel.findByIdAndUpdate(req.params.id,req.body,{new:true});
         res.json({message:"success",category})
     }

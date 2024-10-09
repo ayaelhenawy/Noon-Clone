@@ -1,4 +1,5 @@
 
+import { brandModel } from "../../DataBase/models/brand.model.js";
 import { categoryModel } from "../../DataBase/models/category.model.js";
 import { subCategoryModel } from "../../DataBase/models/subCategory.model.js";
 import { AppError } from "../utilts/appError.js";
@@ -23,6 +24,16 @@ const checkSubCategoryExistOrNot=async(req,res,next)=>{
 
 }
 
+const checkBrandExistOrNot=async(req,res,next)=>{
+    let brand=await brandModel.findById(req.params.id);
+    if(brand)next();
+    else {
+        next(new AppError(`this Brand nof found  ${req.originalUrl}`,404))
+    }
+
+
+}
+
 export{
-    checkSubCategoryExistOrNot,checkCategoryExistOrNot
+    checkSubCategoryExistOrNot,checkCategoryExistOrNot,checkBrandExistOrNot
 }
