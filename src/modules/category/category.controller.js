@@ -21,6 +21,16 @@ const getCategory=async(req,res)=>{
 }
 
 
+const updateCategory=async(req,res)=>{
+    
+    let category=await categoryModel.findByIdAndUpdate(req.params.id,req.body,{new:true});
+    res.json({message:"success",category})
+}
+const deleteCategory=async(req,res)=>{
+    let category=await categoryModel.findByIdAndDelete(req.params.id);
+    res.json({message:"success",category})
+}
+
 export{
-    addCategory,allCategory,getCategory
+    addCategory,allCategory,getCategory,updateCategory,deleteCategory
 }
