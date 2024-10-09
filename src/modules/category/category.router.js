@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import { addCategory, allCategory, deleteCategory, getCategory, updateCategory } from './category.controller.js';
-import { checkCategoryExistOrNot } from '../../middleware/checkCategoryExist.js';
+import { checkCategoryExistOrNot } from '../../middleware/checkExist.js';
 const categoryRouter= Router();
 
 categoryRouter.route('/').post(addCategory).get(allCategory)
