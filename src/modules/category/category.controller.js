@@ -4,11 +4,14 @@ import { catchError } from "../../middleware/catchGlobalError.js";
 
 
 const addCategory=async(req,res)=>{
+    /*
     req.body.slug=slugify(req.body.name)
     let category=new categoryModel(req.body);
     console.log(category);
     await category.save()
-    res.json({message:"success",category})
+   
+    */
+    res.json({message:"success"})
 }
 
 const allCategory=catchError(async(req,res)=>{

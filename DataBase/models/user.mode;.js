@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { boolean } from "webidl-conversions";
+
 const userSchema=mongoose.Schema({
     name:{
         type:String,
@@ -19,15 +19,15 @@ const userSchema=mongoose.Schema({
         required:true,
     },
     isActive:{
-        type:boolean,
+        type:Boolean,
         default:true,
     },
     isBlocked:{
-        type:boolean,
+        type:Boolean,
         default:false,
     },
     confirmEmail:{
-        type:boolean,
+        type:Boolean,
         default:false,
     },
     role:{
