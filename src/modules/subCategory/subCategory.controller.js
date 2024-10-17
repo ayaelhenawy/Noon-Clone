@@ -13,7 +13,11 @@ const addsubCategory=async(req,res)=>{
 }
 
 const allsubCategory=catchError(async(req,res)=>{
-    let subCcategories=await subCategoryModel.find();
+    let filter={}
+    if(req.params.category){
+        filter.category=req.params.category;
+    }
+    let subCategories=await subCategoryModel.find(filter);
     res.json({message:"success",subCategories})
 })
 
