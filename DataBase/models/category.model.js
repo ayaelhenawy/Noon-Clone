@@ -17,6 +17,6 @@ const categorySchema=mongoose.Schema({
     
 },{timestamps:true})
 categorySchema.post('init',function(doc){
-    doc.image=process.env.BASE_URL+doc.image;
+    doc.image=process.env.BASE_URL+"uploads/categories/"+doc.image;
 })
 export const categoryModel=mongoose.model('category',categorySchema);

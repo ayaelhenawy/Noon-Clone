@@ -16,5 +16,8 @@ const brandSchema=mongoose.Schema({
     
     
 },{timestamps:true})
+brandSchema.post('init',function(doc){
+    doc.logo=process.env.BASE_URL+"uploads/brands/"+doc.logo;
+})
 
 export const brandModel=mongoose.model('brand',brandSchema);

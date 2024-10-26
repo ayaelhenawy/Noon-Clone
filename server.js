@@ -17,8 +17,8 @@ dotenv.config()
 
 
 app.use(express.json())
-app.use('/',express.static('uploads'))
-//app.use(categoryRouter)
+app.use('/uploads',express.static('uploads'))
+app.use(categoryRouter)
 bootstrap(app);
 
 

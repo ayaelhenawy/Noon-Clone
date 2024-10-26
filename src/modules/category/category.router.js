@@ -10,7 +10,7 @@ const categoryRouter= Router();
 
 categoryRouter.use('/:category/subCategories',subCategoryRouter)
 categoryRouter.route('/').post(uploadSingleFile('image','categories'),validation(addCategoryValidation),addCategory).get(allCategory)
-categoryRouter.route('/:id').get(checkCategoryExistOrNot,getCategory).put(checkCategoryExistOrNot,updateCategory).delete(checkCategoryExistOrNot,deleteCategory)
+categoryRouter.route('/:id').get(checkCategoryExistOrNot,getCategory).put(checkCategoryExistOrNot,uploadSingleFile('image','categories'),updateCategory).delete(checkCategoryExistOrNot,deleteCategory)
 
 
 export{

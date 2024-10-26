@@ -5,6 +5,7 @@ import { catchError } from "../../middleware/catchGlobalError.js";
 
 const addBrand=async(req,res)=>{
     req.body.slug=slugify(req.body.name)
+    req.body.logo=req.file.filename
     let brand=new brandModel(req.body);
     console.log(brand);
     await brand.save()
@@ -27,6 +28,7 @@ const getBrand=catchError(
 const updateBrand=catchError(
     async(req,res)=>{
         req.body.slug=slugify(req.body.name)
+        req.body.logo=req.file.filename;
         let brand=await brandModel.findByIdAndUpdate(req.params.id,req.body,{new:true});
         res.json({message:"success",brand})
     }

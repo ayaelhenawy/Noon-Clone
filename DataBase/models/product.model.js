@@ -39,7 +39,7 @@ const productSchema=mongoose.Schema({
         min:0,
         required:true,
     },
-    proceAfterDiscount:{
+    priceAfterDiscount:{
         type:Number,
         min:0,
         required:true,
@@ -68,5 +68,10 @@ const productSchema=mongoose.Schema({
     
     
 },{timestamps:true})
+
+productSchema.post('init',function(doc){
+    if(doc.imgCover) doc.imgCover=process.env.BASE_URL+"uploads/products/"+doc.imgCover;
+    if(doc.images) doc.images=doc.images.map((ele)=>ele=process.env.BASE_URL+"uploads/products/"+ele)
+})
 
 export const productModel=mongoose.model('product',productSchema);
