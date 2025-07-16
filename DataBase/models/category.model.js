@@ -19,4 +19,4 @@ const categorySchema=mongoose.Schema({
 categorySchema.post('init',function(doc){
     doc.image=process.env.BASE_URL+"uploads/categories/"+doc.image;
 })
-export const categoryModel=mongoose.model('category',categorySchema);
+export const categoryModel=mongoose.model('category',categorySchema); 

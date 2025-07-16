@@ -13,6 +13,11 @@ const addsubCategory=async(req,res)=>{
 }
 
 const allsubCategory=catchError(async(req,res)=>{
+    let apiFeature=new apiFeature(productModel.find(),req.query)
+    .pagination().fields().filter().sort().search()
+
+    let product=await apiFeature.mongooseQuery;
+    res.json({message:"success",page:apiFeature.pageNumber,product})
     let filter={}
     if(req.params.category){
         filter.category=req.params.category;

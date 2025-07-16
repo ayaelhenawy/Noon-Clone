@@ -1,10 +1,10 @@
 import slugify from "slugify";
 import { categoryModel } from "../../../DataBase/models/category.model.js"
 import { catchError } from "../../middleware/catchGlobalError.js";
+import { ApiFeature } from "../../utilts/apiFeature.js";
 
 
 const addCategory=async(req,res)=>{
-    
     req.body.slug=slugify(req.body.name)
     req.body.image=req.file.filename;
     let category=new categoryModel(req.body);
@@ -14,8 +14,11 @@ const addCategory=async(req,res)=>{
 }
 
 const allCategory=catchError(async(req,res)=>{
-    let categories=await categoryModel.find();
-    res.json({message:"success",categories})
+    let apiFeature=new ApiFeature(categoryModel.find(),req.query)
+
+    let category=await apiFeature.mongooseQuery;
+    res.json({message:"success",page:apiFeature.pageNumber,category})
+    
 })
 
 const getCategory=catchError(

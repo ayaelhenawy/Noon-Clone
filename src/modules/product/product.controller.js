@@ -2,6 +2,7 @@ import slugify from "slugify";
 
 import { catchError } from "../../middleware/catchGlobalError.js";
 import { productModel } from "../../../DataBase/models/product.model.js";
+import { ApiFeature } from "../../utilts/apiFeature.js";
 
 
 
@@ -16,52 +17,12 @@ const addProduct=async(req,res)=>{
 }
 
 const allProduct=catchError(async(req,res)=>{
-    //-----pagination---------
-    let pageNumber=req.query.page*1||1
-    if(req.query.page<0)pageNumber=1;
-    const limit=2;
-    let skip=(pageNumber-1)*limit
-    //-------Filter-------------
-    let productFilter=req.query;
-    let copyProductFilter=structuredClone(productFilter);
-    copyProductFilter=JSON.stringify(copyProductFilter)
-    copyProductFilter=copyProductFilter.replace(/(gt|gte|lt|lte)/g,(value)=>{
-        return `$${value}`;
-    })
-    copyProductFilter=JSON.parse(copyProductFilter)
-    console.log(copyProductFilter);
-    delete copyProductFilter['page'];
-    delete copyProductFilter['sort'];
-    delete copyProductFilter['search'];
 
-    //-----------sort-----------------
+    let apiFeature=new ApiFeature(productModel.find(),req.query)
+    .pagination().fields().filter().sort().search()
 
-    let mongooseQuery=productModel.find().skip(skip).limit(limit);
-    if(req.query.sort){
-        let sortBy=req.query.sort.split(',').join(' ');
-        mongooseQuery=mongooseQuery.sort(sortBy);
-    }
-
-    //----------slected Fields----------
-    if(req.query.fields){
-        let selectedFields=req.query.fields.split(',').join(' ');
-        console.log(selectedFields)
-        mongooseQuery=mongooseQuery.select(selectedFields);
-    }
-    //-------search---------------
-    if(req.query.search){
-        mongooseQuery=mongooseQuery.find({
-        $or:[
-            {title:{$regex:req.query.search,$options:'i'}},
-            {description:{$regex:req.query.search,$options:'i'}}
-
-        ]
-        }
-        )
-    }
-
-    let product=await mongooseQuery;
-    res.json({message:"success",product})
+    let product=await apiFeature.mongooseQuery;
+    res.json({message:"success",page:apiFeature.pageNumber,product})
 })
 
 const getProduct=catchError(

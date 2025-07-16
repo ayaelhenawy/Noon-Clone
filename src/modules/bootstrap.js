@@ -9,4 +9,5 @@ export const bootstrap=(app)=>{
     app.use('/api/subCategories',subCategoryRouter)
     app.use('/api/brands',BrandRouter)
     app.use('/api/products',productRouter)
+    app.use('/api/v1/users',userRouter)
 }
