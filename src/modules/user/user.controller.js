@@ -1,7 +1,9 @@
 
-import { userModel } from "../../../DataBase/models/user.mode;.js";
-import { catchError } from "../../middleware/catchGlobalError.js";
+import { userModel } from "../../../DataBase/models/user.model.js";
+
 import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt'
+import { catchError } from "../../middleware/catchGlobalError.js";
 
 const addUser = catchError(async (req, res, next) => {
   console.log(req.body);
