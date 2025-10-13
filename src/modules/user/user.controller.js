@@ -4,11 +4,12 @@ import { userModel } from "../../../DataBase/models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcrypt'
 import { catchError } from "../../middleware/catchGlobalError.js";
+import { AppError } from "../../utilts/appError.js";
 
 const addUser = catchError(async (req, res, next) => {
   console.log(req.body);
   let user = new userModel(req.body);
-  const token = jwt.sign({ id: user._id, email: user.email }, "1234");
+  const token = jwt.sign({ id: user._id, email: user.email }, "aykey");
   await user.save();
   res.json({ message: "success", user, token });
 });
@@ -27,14 +28,14 @@ const getSpecificUser = catchError(async (req, res, next) => {
 });
 
 const updateUser = catchError(async (req, res, next) => {
-  let user = await userModel.findByIdAndUpdate(req.params.id);
-  user || next(new AppError(`${user} not found`));
-  !user || res.json({ message: "success", document });
+  let user = await userModel.findByIdAndUpdate(req.params.id, req.body);
+  user || next(new AppError(`user not found`));
+  !user || res.json({ message: "success", user});
 });
 
 const deleteUser = catchError(async (req, res, next) => {
   let user = await userModel.findByIdAndDelete(req.params.id);
-  user || next(new AppError(`${user} not found`));
+  user || next(new AppError(`user not found`));
   !user || res.json({ message: "success" });
 });
 export { addUser, getAllUsers, getSpecificUser, deleteUser, updateUser };

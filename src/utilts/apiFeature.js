@@ -1,74 +1,73 @@
+export class ApiFeature {
+  constructor(mongooseQuery, searchQuery) {
+    this.mongooseQuery = mongooseQuery;
+    this.searchQuery = searchQuery;
+  }
 
 
+  filter() {
+    let filterObj = structuredClone(this.searchQuery);
 
-export class ApiFeature{
-    constructor(mongooseQuery,searchQuery){
-        this.mongooseQuery=mongooseQuery;
-        this .searchQuery=searchQuery;
-    }
-    pagination(){
-        let pageNumber=this.searchQuery*1||1
-        if(this.searchQuery<0)pageNumber=1;
-        const limit=2;
-        let skip=(pageNumber-1)*limit
-        this.mongooseQuery.skip(skip).limit(limit);
-        this.pageNumber=pageNumber;
-        return this;
-    }
+    const excludedFields = ['page', 'sort', 'limit', 'fields', 'search'];
+    excludedFields.forEach((field) => delete filterObj[field]);
+
+    filterObj = JSON.stringify(filterObj);
+    filterObj = filterObj.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`);
+    filterObj = JSON.parse(filterObj);
+
+    this.mongooseQuery.find(filterObj);
+    return this;
+  }
 
 
-    filter(){
-        
-        let filterObj=structuredClone(this.searchQuery);
-        filterObj=JSON.stringify(filterObj)
-        filterObj=filterObj.replace(/(gt|gte|lt|lte)/g,(value)=>{
-            return `$${value}`;
-        })
-        filterObj=JSON.parse(filterObj)
-        console.log(filterObj);
-        delete filterObj['page'];
-        delete filterObj['sort']; 
-        delete filterObj['search'];
-        this.mongooseQuery.find(filterObj)
-        return this;
-    
-    }
-
-
-    sort(){
-    if(this.searchQuery.sort){
-        let sortBy=this.searchQuery.sort.split(',').join(' ');
-        this.mongooseQuery.sort(sortBy);
+  search() {
+    if (this.searchQuery.search) {
+      const searchTerm = this.searchQuery.search;
+      this.mongooseQuery.find({
+        $or: [
+          { title: { $regex: searchTerm, $options: 'i' } },
+          { description: { $regex: searchTerm, $options: 'i' } },
+          { name: { $regex: searchTerm, $options: 'i' } } 
+        ],
+      });
     }
     return this;
+  }
 
+
+  sort() {
+    if (this.searchQuery.sort) {
+      const sortBy = this.searchQuery.sort.split(',').join(' ');
+      this.mongooseQuery.sort(sortBy);
+    } else {
+      this.mongooseQuery.sort('-createdAt');
     }
+    return this;
+  }
 
-
-    fields(){
-        if(this.searchQuery.fields){
-            let selectedFields=this.searchQuery.fields.split(',').join(' ');
-            console.log(selectedFields)
-            this.mongooseQuery.select(selectedFields);
-        }
-        return this;
+  
+  fields() {
+    if (this.searchQuery.fields) {
+      const selectedFields = this.searchQuery.fields.split(',').join(' ');
+      this.mongooseQuery.select(selectedFields);
+    } else {
+      this.mongooseQuery.select('-__v');
     }
+    return this;
+  }
 
 
-    search(){
-        if(this.searchQuery.search){
-            this.mongooseQuery.find({
-            $or:[
-                {title:{$regex:this.searchQuery.search,$options:'i'}},
-                {description:{$regex:this.searchQuery.search,$options:'i'}}
-    
-            ]
-            }
-            )
-        }
-        return this;
-    }
+  pagination() {
+    let pageNumber = this.searchQuery.page * 1 || 1;
+    if (pageNumber <= 0) pageNumber = 1;
 
+    const limit = this.searchQuery.limit * 1 || 10;
+    const skip = (pageNumber - 1) * limit;
 
+    this.mongooseQuery.skip(skip).limit(limit);
+    this.pageNumber = pageNumber;
+    this.limit = limit;
 
+    return this;
+  }
 }

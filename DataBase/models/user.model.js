@@ -41,6 +41,7 @@ const userSchema=mongoose.Schema({
     
     
 },{timestamps:true})
+passwordChangedAt: Date,
 
 userSchema.pre('save',function(){
     this.password= bcrypt.hashSync(this.password,8)

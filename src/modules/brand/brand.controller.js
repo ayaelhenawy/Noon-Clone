@@ -33,6 +33,7 @@ const updateBrand=catchError(
         res.json({message:"success",brand})
     }
 )
+
 const deleteBrand=catchError(
     async(req,res)=>{
         let brand=await brandModel.findByIdAndDelete(req.params.id);
