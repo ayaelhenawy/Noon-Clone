@@ -1,9 +1,9 @@
 
 
 
-import { userModel } from '../../DataBase/models/user.model.js'
-import { catchError } from '../middleware/catchGlobalError.js'
-import { AppError } from "../utilts/appError.js"
+import { userModel } from '../../../DataBase/models/user.model.js'
+import { catchError } from '../../middleware/catchGlobalError.js'
+import { AppError } from "../../utilts/appError.js"
 
 const addToWishlist = catchError(async(req,res,next)=>{
 

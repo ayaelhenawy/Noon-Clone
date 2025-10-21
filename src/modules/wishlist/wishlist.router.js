@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { addToWishlist, getLoggedUserWishlist, removeFromWishlist } from './wishlist.controller.js'
-import { protectedRoutes } from './auth/auth.controller.js'
+import { protectedRoutes } from '../auth/auth.controller.js'
 
 
 const wishlistRouter = Router()
